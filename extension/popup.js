@@ -19,15 +19,15 @@ function render() {
   domain.hidden = !site;
   if (site) domain.textContent = site;
   toggle.hidden = !site || !config.endpoint;
-  if (!toggle.hidden) toggle.textContent = config.sites.includes(site) ? 'Убрать из списка' : 'Добавить в список';
-  status.textContent = config.endpoint ? '' : 'Сначала выбери локальный прокси.';
+  if (!toggle.hidden) toggle.textContent = config.sites.includes(site) ? t('removeSite') : t('addSite');
+  status.textContent = config.endpoint ? '' : t('chooseProxy');
 }
 
 toggle.addEventListener('click', async () => {
   toggle.disabled = true;
   try {
     config = await updateConfig(current => {
-      if (!current.endpoint) throw new Error('Сначала выбери локальный прокси.');
+      if (!current.endpoint) throw new Error(t('chooseProxy'));
       const sites = current.sites.includes(site) ? current.sites.filter(name => name !== site) : [...current.sites, site];
       return { ...current, sites };
     });

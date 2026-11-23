@@ -1,0 +1,85 @@
+{
+  "extensionDescription": {
+    "message": "Routes selected sites through a local proxy and lists which sites are using it."
+  },
+  "siteList": {
+    "message": "Sites using the proxy"
+  },
+  "emptyList": {
+    "message": "The list is empty."
+  },
+  "configure": {
+    "message": "Configure proxy"
+  },
+  "settingsTitle": {
+    "message": "Site Proxy Switcher settings"
+  },
+  "endpointLabel": {
+    "message": "Local HTTP or SOCKS5 proxy address"
+  },
+  "save": {
+    "message": "Save"
+  },
+  "autoHeading": {
+    "message": "Automatic discovery"
+  },
+  "autoIntro": {
+    "message": "Start your VPN client. Discovery requires the Windows or macOS helper from the archive."
+  },
+  "detect": {
+    "message": "Find local proxies"
+  },
+  "removeSite": {
+    "message": "Remove from list"
+  },
+  "addSite": {
+    "message": "Add to list"
+  },
+  "chooseProxy": {
+    "message": "Choose a local proxy first."
+  },
+  "saved": {
+    "message": "Saved $ADDRESS$",
+    "placeholders": {
+      "address": {
+        "content": "$1"
+      }
+    }
+  },
+  "socksAuth": {
+    "message": "Chrome does not support passwords for SOCKS5. Choose HTTP if available."
+  },
+  "httpAuth": {
+    "message": "The HTTP proxy requested authentication."
+  },
+  "use": {
+    "message": "Use this proxy"
+  },
+  "found": {
+    "message": "Local ports found. Your VPN client decides where to send their traffic."
+  },
+  "notFound": {
+    "message": "No local proxy found. Check that your client is connected or enter the address manually."
+  },
+  "permissionDenied": {
+    "message": "Discovery permission was declined. You can still enter the address manually."
+  },
+  "searching": {
+    "message": "Looking for local proxies…"
+  },
+  "helperFailed": {
+    "message": "The helper could not check for local ports."
+  },
+  "helperMissing": {
+    "message": "Install the discovery helper for Windows or macOS from the archive, or enter the address manually."
+  },
+  "invalidEndpoint": {
+    "message": "Enter a local proxy address, for example http://127.0.0.1:7890."
+  },
+  "invalidPort": {
+    "message": "The port must be between 1 and 65535."
+  },
+  "proxyControlled": {
+    "message": "Another extension or Chrome policy controls the proxy settings."
+  }
+}

@@ -1,36 +1,38 @@
-# Безопасность Site Proxy Switcher
+# Security
 
-## Разрешения Chrome
+[Русский](SECURITY.ru.md) · [README](README.md)
 
-| Разрешение | Применение |
+## Chrome permissions
+
+| Permission | Purpose |
 | --- | --- |
-| `activeTab` | После открытия меню получает адрес активной вкладки и её ID для перезагрузки после переключения. В список сохраняется только домен. |
-| `proxy` | Устанавливает правило выбора прокси для обычных вкладок профиля. |
-| `storage` | Хранит локальный endpoint и выбранные домены в `chrome.storage.local`. |
-| `nativeMessaging` | Запрашивается по нажатию «Найти локальный прокси». По завершении поиска расширение вызывает отзыв разрешения. Ручной режим работает с основными разрешениями. |
+| `activeTab` | Reads the active tab's address after you open the extension menu and reloads that tab after a rule change. The extension saves only the domain. |
+| `proxy` | Applies proxy rules to regular tabs in this Chrome profile. |
+| `storage` | Stores the proxy address and selected domains in `chrome.storage.local`. |
+| `nativeMessaging` | Chrome requests this optional permission when you click **Find local proxies**. The extension asks Chrome to remove it after the attempt. Manual entry works without it. |
 
-В манифесте отсутствуют разрешения на историю, cookie и постоянный доступ к веб-страницам. Расширение не внедряет код в сайты. [Разрешения Chrome](https://developer.chrome.com/docs/extensions/reference/api/permissions) · [Доступ к активной вкладке](https://developer.chrome.com/docs/extensions/develop/concepts/activeTab)
+The extension has no history, cookie, or persistent website access permissions. It doesn't inject scripts into pages or collect telemetry. [Chrome permissions](https://developer.chrome.com/docs/extensions/reference/api/permissions) · [activeTab](https://developer.chrome.com/docs/extensions/develop/concepts/activeTab)
 
-## Что делает помощник
+## Discovery helpers
 
-- Собирается из двух файлов C# компилятором .NET Framework из Windows. Установщик записывает программу и манифест в `%LOCALAPPDATA%\SiteProxySwitcher` и создаёт один ключ Native Messaging в `HKCU`.
-- Chrome запускает помощник по запросу. Для связи используются stdin и stdout. Помощник не открывает свой сервер, не регистрирует службу и не настраивает автозапуск.
-- Манифест разрешает вызов одному идентификатору расширения. Помощник сверяет origin запуска, ограничивает входное сообщение 1024 байтами и обрабатывает только команду `discover`. Из сообщения нельзя задать команду оболочки, имя файла или адрес для проверки.
-- Поиск читает таблицу локальных IPv4 TCP-входов, сопоставляет их с известными клиентами по имени процесса и расположению ядра, проверяет зарегистрированный системный HTTP-прокси Windows. Для Koala и совместимых версий Clash Verge Rev он запрашивает `GET /configs` через локальный именованный канал и извлекает `port` и `mixed-port`. Остальные поля ответа не входят в результат. Файлы подписок помощник не открывает.
-- Проверки обращаются к `127.0.0.1`: приветствие SOCKS5 без адреса назначения и запрос `OPTIONS *` для обнаружения необходимости HTTP-авторизации. Они не передают посещённые URL, содержимое страницы или учётные данные. В ответ Chrome возвращаются только имя распознанного клиента, адрес, порт, протокол, признак запроса авторизации и источник определения.
+- Both helpers run as the current user when Chrome starts them through Native Messaging. They use standard input and output and register no background service or network listener.
+- The host manifest allows one Chrome extension ID. The helper checks the caller's origin and accepts only a `discover` request up to 1,024 bytes. The request cannot supply a command line, filename, destination, or port.
+- Windows compiles the C# helper locally with .NET Framework, installs it under `%LOCALAPPDATA%\SiteProxySwitcher`, and registers one host in `HKCU`. Discovery uses local IPv4 TCP listeners, process ownership, and the Windows system HTTP proxy. For compatible Koala Clash and Clash Verge Rev versions, it reads only the `port` and `mixed-port` values from the local named pipe's `GET /configs` response.
+- macOS installs the Python source and launcher in `~/Library/Application Support/SiteProxySwitcher` and the registration in Chrome's per-user Native Messaging folder. Discovery reads process names, your account's TCP listeners, and the system HTTP proxy settings. It doesn't read VPN client configurations.
+- Both helpers probe selected loopback listeners with a SOCKS5 greeting or `OPTIONS *`. These requests carry no target website, page data, or credentials. Neither helper opens subscription files. The reply contains the recognized client, loopback address, port, protocol, authentication indicator, and source of the detection.
 
-[Native Messaging](https://developer.chrome.com/docs/extensions/develop/concepts/native-messaging) · [Таблица TCP в Windows](https://learn.microsoft.com/en-us/windows/win32/api/iphlpapi/nf-iphlpapi-getextendedtcptable)
+[Native Messaging](https://developer.chrome.com/docs/extensions/develop/concepts/native-messaging) · [Windows TCP table](https://learn.microsoft.com/en-us/windows/win32/api/iphlpapi/nf-iphlpapi-getextendedtcptable)
 
-## Границы защиты
+## Routing and trust
 
-- В настройках принимаются только `127.0.0.1`, `localhost` (преобразуется в `127.0.0.1`) или `[::1]` с явным номером порта. Логин, пароль, путь и удалённый адрес во вводе отклоняются. Список доменов вставляется в PAC как JSON, значения отображаются текстом.
-- У выбранных доменов в PAC указан один прокси. При недоступном порте Chrome не получает запасной прямой маршрут для этих доменов. При отключении или удалении самого расширения его конфигурация снимается.
-- Запросы к другим доменам, системный TUN, DNS и WebRTC зависят от Chrome и VPN-клиента. Автоопределение не проверяет внешний IP, факт туннелирования и отсутствие утечек.
-- Процесс на том же ПК может занять сохранённый локальный порт после выхода VPN-клиента. Расширение не проверяет владельца порта при каждом запросе. Имя процесса — признак для поиска, его можно подделать. Публичный `key` в манифесте задаёт постоянный ID для распакованной сборки и не служит подтверждением её происхождения.
-- HTTP(S) по-прежнему подчиняется правилам Chrome для TLS. Веб-трафик выбранных доменов обрабатывается твоим VPN-клиентом и его прокси. Используй порт клиента, которому доверяешь.
+- The address field accepts `127.0.0.1`, `localhost` (normalized to `127.0.0.1`), or `[::1]` and an explicit port. It rejects usernames, passwords, remote addresses, and paths. Domain names go into the PAC script as JSON and appear as text in the UI.
+- The PAC rule for a selected domain has just one proxy and no direct fallback. Disabling or removing the extension clears its configuration. While the rule is active, Chrome uses a direct route for other domains. This can override a separate system HTTP proxy.
+- System VPN/TUN, DNS, and WebRTC have their own routing. Discovery doesn't measure the external IP, confirm use of a VPN tunnel, or test for leaks. Cross-origin dependencies take their own domain rules.
+- A different local process can take the saved port after the VPN client exits. The extension does not continuously verify the owner. Process names are a discovery hint. The public manifest key makes the unpacked extension ID stable and does not authenticate the source build.
+- Chrome still enforces its normal HTTPS certificate checks. The client behind the saved port handles selected-site traffic. Use a client you trust and keep the proxy bound to loopback for local use.
 
-[Прокси и резервные маршруты Chrome](https://chromium.googlesource.com/chromium/src/+/main/net/docs/proxy.md) · [Сетевые настройки WebRTC](https://developer.chrome.com/docs/extensions/reference/api/privacy#property-network)
+[Chromium proxy behavior](https://chromium.googlesource.com/chromium/src/+/main/net/docs/proxy.md) · [Chrome WebRTC network policy](https://developer.chrome.com/docs/extensions/reference/api/privacy#property-network)
 
-## Сообщить об уязвимости
+## Report a vulnerability
 
-В опубликованном репозитории используй **Security → Report a vulnerability**, если владелец включил приватные сообщения. Приложи версию расширения, версию Chrome, систему и минимальные шаги на тестовом профиле. Замени VPN-ключи, адреса подписки и содержимое профиля в любых приложенных данных на тестовые значения. [Приватные сообщения об уязвимостях на GitHub](https://docs.github.com/en/code-security/how-tos/report-and-fix-vulnerabilities/report-privately)
+In the GitHub repository, open **Security → Report a vulnerability**. Include the extension version, Chrome version, operating system, and steps using a test profile. Replace VPN keys, subscription URLs, and profile contents with dummy values before attaching files. [GitHub private vulnerability reporting](https://docs.github.com/en/code-security/how-tos/report-and-fix-vulnerabilities/report-privately)

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <title>Site Proxy Switcher</title>
@@ -12,12 +12,13 @@
     <button id="toggle" class="primary" hidden></button>
     <p id="status" role="status"></p>
     <section aria-labelledby="site-list-heading">
-      <h2 id="site-list-heading">Сайты через прокси</h2>
-      <p id="empty">Список пока пуст.</p>
+      <h2 id="site-list-heading" data-i18n="siteList">Sites using the proxy</h2>
+      <p id="empty" data-i18n="emptyList">The list is empty.</p>
       <ul id="sites" hidden></ul>
     </section>
-    <button id="settings">Настроить прокси</button>
+    <button id="settings" data-i18n="configure">Configure proxy</button>
   </main>
+  <script src="i18n.js"></script>
   <script src="routing.js"></script>
   <script src="popup.js"></script>
 </body>

@@ -1,26 +1,27 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Настройки Site Proxy Switcher</title>
+  <title data-i18n="settingsTitle">Site Proxy Switcher settings</title>
   <link rel="stylesheet" href="ui.css">
 </head>
 <body class="settings">
   <main>
-    <h1>Настроить прокси</h1>
+    <h1 data-i18n="configure">Configure proxy</h1>
     <form id="manual">
-      <label for="endpoint">Адрес локального HTTP или SOCKS5-прокси</label>
+      <label for="endpoint" data-i18n="endpointLabel">Local HTTP or SOCKS5 proxy address</label>
       <input id="endpoint" placeholder="http://127.0.0.1:7890" maxlength="40" spellcheck="false" autocomplete="off" required>
-      <button id="save" class="primary" type="submit">Сохранить</button>
+      <button id="save" class="primary" type="submit" data-i18n="save">Save</button>
     </form>
     <section aria-labelledby="detect-heading">
-      <h2 id="detect-heading">Автоопределение на Windows</h2>
-      <p>Запусти VPN-клиент и выбери найденный прокси. Для поиска нужен помощник из архива.</p>
-      <button id="detect">Найти локальный прокси</button>
+      <h2 id="detect-heading" data-i18n="autoHeading">Automatic discovery</h2>
+      <p data-i18n="autoIntro">Start your VPN client. Discovery requires the Windows or macOS helper from the archive.</p>
+      <button id="detect" data-i18n="detect">Find local proxies</button>
       <ul id="candidates" class="results"></ul>
     </section>
     <p id="status" role="status"></p>
   </main>
+  <script src="i18n.js"></script>
   <script src="routing.js"></script>
   <script src="settings.js"></script>
 </body>

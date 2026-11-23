@@ -1,8 +1,9 @@
 {
   "manifest_version": 3,
   "name": "Site Proxy Switcher",
-  "version": "0.1.0",
-  "description": "Отправляет выбранные сайты через локальный прокси и показывает их список.",
+  "version": "0.2.0",
+  "default_locale": "en",
+  "description": "__MSG_extensionDescription__",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA8mtpx+lSApnSF9EH7rHiriTd2BV9STSUhNFJpa8iSEWSch/kBGiaWgDJMevNn2RujuZ4k8Md9VuyfQqY52HpbByT3X0D5ESvNnpuJ7KyPxIZj0K9oZZIYTT1sojslhLkU59bx9Tj6qeXKRe4+gHf/hxLCmoSR+cjSeKp4/5cxai9cAGP62kYjFBPRjaukKEubGpUWA2vpKE4/Jf4QteVqsB5OjbSzCXvsSnQBpXLRJB/Z2JANIy8B1RGGV8uYpqouZQ8LpJl5+RrxoMLQm69RhGF0v47QXI/Gbgm/kcKFFAJABAIJkmdRo5jprGzzDKQ15GVu2UuVYGLF9guUFmKYQIDAQAB",
   "permissions": ["activeTab", "proxy", "storage"],
   "optional_permissions": ["nativeMessaging"],

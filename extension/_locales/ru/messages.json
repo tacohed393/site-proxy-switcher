@@ -1,0 +1,85 @@
+{
+  "extensionDescription": {
+    "message": "Направляет выбранные сайты через локальный прокси и показывает их список."
+  },
+  "siteList": {
+    "message": "Сайты через прокси"
+  },
+  "emptyList": {
+    "message": "Список пока пуст."
+  },
+  "configure": {
+    "message": "Настроить прокси"
+  },
+  "settingsTitle": {
+    "message": "Настройки Site Proxy Switcher"
+  },
+  "endpointLabel": {
+    "message": "Адрес локального HTTP- или SOCKS5-прокси"
+  },
+  "save": {
+    "message": "Сохранить"
+  },
+  "autoHeading": {
+    "message": "Автоопределение"
+  },
+  "autoIntro": {
+    "message": "Запусти VPN-клиент. Для поиска нужен помощник для Windows или macOS из архива."
+  },
+  "detect": {
+    "message": "Найти локальный прокси"
+  },
+  "removeSite": {
+    "message": "Убрать из списка"
+  },
+  "addSite": {
+    "message": "Добавить в список"
+  },
+  "chooseProxy": {
+    "message": "Сначала выбери локальный прокси."
+  },
+  "saved": {
+    "message": "Сохранено $ADDRESS$",
+    "placeholders": {
+      "address": {
+        "content": "$1"
+      }
+    }
+  },
+  "socksAuth": {
+    "message": "Chrome не поддерживает пароль для SOCKS5. Выбери HTTP, если он доступен."
+  },
+  "httpAuth": {
+    "message": "HTTP-прокси запросил авторизацию."
+  },
+  "use": {
+    "message": "Использовать"
+  },
+  "found": {
+    "message": "Обнаружены локальные порты. Куда направить их трафик, решает VPN-клиент."
+  },
+  "notFound": {
+    "message": "Локальный прокси не найден. Проверь, что клиент подключён, или укажи адрес вручную."
+  },
+  "permissionDenied": {
+    "message": "Разрешение на поиск не выдано. Адрес можно указать вручную."
+  },
+  "searching": {
+    "message": "Ищу локальные прокси…"
+  },
+  "helperFailed": {
+    "message": "Помощник не смог проверить локальные порты."
+  },
+  "helperMissing": {
+    "message": "Установи помощник для Windows или macOS из архива или введи адрес вручную."
+  },
+  "invalidEndpoint": {
+    "message": "Укажи локальный прокси, например http://127.0.0.1:7890."
+  },
+  "invalidPort": {
+    "message": "Порт должен быть от 1 до 65535."
+  },
+  "proxyControlled": {
+    "message": "Прокси управляется другим расширением или политикой Chrome."
+  }
+}

@@ -13,7 +13,7 @@ async function saveEndpoint(endpoint) {
   try {
     await updateConfig(current => ({ ...current, endpoint }));
     input.value = formatEndpoint(endpoint);
-    status.textContent = `Сохранено ${input.value}`;
+    status.textContent = t('saved', input.value);
   } catch (error) { status.textContent = error.message; }
   finally { save.disabled = false; }
 }
@@ -37,16 +37,16 @@ function showCandidates(found) {
     row.append(label, document.createElement('br'));
     if (endpoint.protocol === 'socks5' && item.authRequired === true) {
       const hint = document.createElement('span');
-      hint.textContent = 'Chrome не поддерживает пароль для SOCKS5. Выбери HTTP, если он доступен.';
+      hint.textContent = t('socksAuth');
       row.append(hint);
     } else {
       if (endpoint.protocol === 'http' && item.authRequired === true) {
         const hint = document.createElement('p');
-        hint.textContent = 'HTTP-прокси запросил авторизацию.';
+        hint.textContent = t('httpAuth');
         row.append(hint);
       }
       const use = document.createElement('button');
-      use.textContent = 'Использовать';
+      use.textContent = t('use');
       use.addEventListener('click', () => saveEndpoint(endpoint));
       row.append(use);
     }
@@ -54,8 +54,8 @@ function showCandidates(found) {
   }
   candidates.replaceChildren(...rows);
   status.textContent = rows.length
-    ? 'Обнаружены локальные порты. Куда клиент направит трафик, определяют его правила.'
-    : 'Локальный прокси не найден. Проверь, что клиент подключён, или укажи адрес вручную.';
+    ? t('found')
+    : t('notFound');
 }
 
 detect.addEventListener('click', async () => {
@@ -65,16 +65,16 @@ detect.addEventListener('click', async () => {
   try {
     granted = await chrome.permissions.request({ permissions: ['nativeMessaging'] });
     if (!granted) {
-      status.textContent = 'Разрешение на автоопределение не выдано. Ручная настройка доступна.';
+      status.textContent = t('permissionDenied');
       return;
     }
-    status.textContent = 'Ищу локальный прокси…';
+    status.textContent = t('searching');
     const result = await chrome.runtime.sendNativeMessage(hostName, { command: 'discover' });
-    if (result?.ok !== true || !Array.isArray(result.candidates)) throw new Error('Помощник не смог проверить локальные порты.');
+    if (result?.ok !== true || !Array.isArray(result.candidates)) throw new Error(t('helperFailed'));
     showCandidates(result.candidates);
   } catch (error) {
     status.textContent = /native messaging host/i.test(error.message)
-      ? 'Установи помощник из архива через Install-Discovery.cmd или введи адрес вручную.'
+      ? t('helperMissing')
       : error.message;
   } finally {
     if (granted) await chrome.permissions.remove({ permissions: ['nativeMessaging'] }).catch(() => {});

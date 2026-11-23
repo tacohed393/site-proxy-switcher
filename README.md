@@ -1,57 +1,59 @@
 <h1 align="center">Site Proxy Switcher</h1>
 
 <p align="center">
-  <strong>Прокси для выбранных сайтов в Chrome</strong><br>
-  Добавь сайт в список, и Chrome будет открывать его через твой локальный HTTP- или SOCKS5-прокси.
+  <strong>Use your local proxy for selected sites in Chrome</strong><br>
+  Pick the sites. Chrome sends their requests to your local HTTP or SOCKS5 proxy.
 </p>
 
 <p align="center">
-  <a href="https://github.com/tacohed393/site-proxy-switcher/releases/download/v0.1.0/site-proxy-switcher-0.1.0-source.zip"><strong>Скачать ZIP v0.1.0</strong></a>
-  &nbsp;·&nbsp; <a href="#установка">Установка</a>
-  &nbsp;·&nbsp; <a href="SECURITY.md">Безопасность</a>
+  <a href="https://github.com/tacohed393/site-proxy-switcher/releases/download/v0.2.0/site-proxy-switcher-0.2.0-source.zip"><strong>Download ZIP v0.2.0</strong></a>
+  &nbsp;·&nbsp; <a href="docs/find-port.md">Find your proxy port</a>
+  &nbsp;·&nbsp; <a href="SECURITY.md">Security</a>
+  &nbsp;·&nbsp; <a href="README.ru.md">Русский</a>
 </p>
 
 <p align="center">
-  <img src="docs/preview.png" width="940" alt="Меню расширения со списком сайтов и настройки с найденным локальным прокси Koala Clash">
+  <img src="docs/preview.png" width="940" alt="Chrome extension showing the selected sites and a detected local proxy">
 </p>
 
-## Установка
+## Install
 
-1. [Скачай архив](https://github.com/tacohed393/site-proxy-switcher/releases/tag/v0.1.0) и распакуй его. В `chrome://extensions` включи **Режим разработчика** → **Загрузить распакованное расширение** → выбери папку `extension`.
-2. В меню расширения нажми **Настроить прокси**. Введи адрес из настроек своего клиента, например `http://127.0.0.1:7890` или `socks5://127.0.0.1:10808`.
-3. Открой нужный сайт и нажми **Добавить в список**. YouTube добавляется вместе с доменами видео, превью и API.
+1. [Download and extract the ZIP](https://github.com/tacohed393/site-proxy-switcher/releases/tag/v0.2.0). Open `chrome://extensions`, turn on **Developer mode**, select **Load unpacked**, and choose the `extension` folder.
+2. Open **Configure proxy** from the extension menu. Enter your client's local address, such as `http://127.0.0.1:7890` or `socks5://127.0.0.1:10808`. [Find the right port](docs/find-port.md).
+3. Open a site and click **Add to list**. The rule applies across regular tabs in this Chrome profile. Adding YouTube includes its video, thumbnail, and API domains.
 
-## Автоопределение на Windows
+Chrome picks the interface language. English is the default, and Russian is available when Chrome's interface uses Russian.
 
-Один раз запусти `Install-Discovery.cmd`. Он соберёт помощник из исходников системным компилятором .NET Framework. Затем в расширении нажми **Найти локальный прокси** → **Использовать** напротив нужного порта. Chrome запускает помощник по кнопке. После ответа процесс завершается.
+## Automatic discovery
 
-| Клиент | Статус проверки |
-| --- | --- |
-| Koala Clash | Проверено на запущенном клиенте |
-| Happ, Clash Verge Rev, v2rayN | Проверено на локальных имитациях |
-| Другие локальные HTTP- и SOCKS5-прокси | Ручной ввод адреса и порта |
+Manual entry works on Windows and macOS with no helper. For discovery, install the helper once, start your VPN client, then select **Find local proxies** → **Use this proxy**.
 
-Поиск определяет локальный порт. Куда через него пойдёт трафик, решает VPN-клиент. При нестандартном порте используй ручной ввод. [Порты Mihomo](https://wiki.metacubex.one/en/config/inbound/port/) · [Прокси в Chrome](https://chromium.googlesource.com/chromium/src/+/main/net/docs/proxy.md#proxy-server-schemes)
+| Platform | Install | Uninstall |
+| --- | --- | --- |
+| Windows | Run `Install-Discovery.cmd` from the extracted folder | Run `Uninstall-Discovery.cmd` |
+| macOS (experimental) | In Terminal, from the extracted folder run `sh ./Install-Discovery-macOS.sh` | Run `sh ./Uninstall-Discovery-macOS.sh` |
 
-## Безопасность
+Windows uses the system .NET Framework compiler. The optional macOS helper needs Python 3.8+ available as `python3`. Both helpers run as the current user and exit after returning results.
 
-- Список доменов и адрес прокси хранятся в профиле Chrome. Телеметрии нет.
-- Для автоопределения Chrome запрашивает отдельное разрешение. Поиск проверяет только локальные порты. Подписки VPN помощник не открывает.
-- Когда выбранный порт недоступен, у сайтов из списка нет запасного прямого маршрута. Системный VPN по-прежнему может влиять на сайты вне списка.
+Discovery looks for Koala Clash, Happ, Clash Verge Rev and v2rayN. On macOS, a helper run under your account may miss a listener owned by a privileged service or an HTTP-only proxy that the client hasn't registered in system settings. Use [manual entry](docs/find-port.md) if your client or port is missing. Your VPN client decides where the proxy sends traffic.
 
-Подробности о разрешениях, проверках и границах защиты — в [SECURITY.md](SECURITY.md).
+## Security
 
-## Удаление
+- The list of sites and proxy address stay in the Chrome profile. There is no telemetry.
+- Chrome asks for a separate discovery permission. The helper checks loopback ports and leaves VPN subscriptions unread.
+- Selected sites have no direct fallback if the saved proxy goes offline. While the extension controls Chrome's proxy setting, other sites use Chrome's direct route. System-wide VPN routing can still apply.
 
-Удали расширение в `chrome://extensions`. Если ставил помощник, запусти `Uninstall-Discovery.cmd` из архива. В одном профиле Chrome действует одна эффективная настройка прокси. Для параллельной проверки двух расширений используй отдельные профили. [Настройки Chrome](https://developer.chrome.com/docs/extensions/reference/api/types#scope-and-lifecycle)
+Read the [security model and reporting instructions](SECURITY.md).
+
+## Remove
+
+Remove the extension from `chrome://extensions` to clear its proxy setting. If you installed a helper, run the uninstall command for your platform. To update an unpacked installation, replace its extension files with the new version and click **Reload** on its card.
 
 <details>
-<summary>Что проверено в v0.1.0</summary>
+<summary>What has been tested</summary>
 
-- В отдельном профиле Chrome проверены HTTP/SOCKS5, правила для YouTube, список сайтов, снятие настройки прокси и отклонение удалённых адресов.
-- Детектор подтвердил порты работающей Koala Clash. На имитациях Happ, Clash Verge Rev и v2rayN проверены определение владельца, SOCKS5 и распознавание авторизации.
-- Native Messaging проверен с тестовым манифестом. Регистрацию помощника в пользовательском Chrome предстоит проверить при установке.
-
-Код расширения находится в [`extension/`](extension/), Windows-помощника на C# — в [`native/`](native/).
+- HTTP and SOCKS5 routing rules, YouTube, the selected-site list, clearing proxy settings and loopback-only input validation were checked in a separate Chrome profile on Windows.
+- Windows discovery was tested with Koala Clash and local fixtures for Happ, Clash Verge Rev and v2rayN.
+- macOS discovery was checked with simulated system output, loopback tests, and test registration files. Installation and discovery in Chrome on a Mac still need a real-device test.
 
 </details>

@@ -6,10 +6,10 @@ const youtube = [
 
 function parseEndpoint(value) {
   const match = /^(http|socks5):\/\/(localhost|127\.0\.0\.1|\[::1\]):(\d{1,5})$/i.exec(value.trim());
-  if (!match) throw new Error('Укажи локальный прокси, например http://127.0.0.1:7890.');
+  if (!match) throw new Error(t('invalidEndpoint'));
   const [, protocol, address, portText] = match;
   const port = Number(portText);
-  if (port < 1 || port > 65535) throw new Error('Порт должен быть от 1 до 65535.');
+  if (port < 1 || port > 65535) throw new Error(t('invalidPort'));
   return { protocol: protocol.toLowerCase(), host: address.toLowerCase() === 'localhost' ? '127.0.0.1' : address, port };
 }
 
@@ -54,7 +54,7 @@ async function applyRouting({ endpoint, sites }) {
     return;
   }
   if (!['controllable_by_this_extension', 'controlled_by_this_extension'].includes(current.levelOfControl)) {
-    throw new Error('Прокси управляется другим расширением или политикой Chrome.');
+    throw new Error(t('proxyControlled'));
   }
   const data = proxyScript(endpoint, sites);
   if (current.levelOfControl !== 'controlled_by_this_extension' || data !== current.value?.pacScript?.data) {
