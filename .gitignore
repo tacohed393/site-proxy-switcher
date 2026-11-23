@@ -1,0 +1,5 @@
+*.exe
+*.pdb
+*.zip
+node_modules/
+.build/

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Настройки Site Proxy Switcher</title>
+  <link rel="stylesheet" href="ui.css">
+</head>
+<body class="settings">
+  <main>
+    <h1>Настроить прокси</h1>
+    <form id="manual">
+      <label for="endpoint">Адрес локального HTTP или SOCKS5-прокси</label>
+      <input id="endpoint" placeholder="http://127.0.0.1:7890" maxlength="40" spellcheck="false" autocomplete="off" required>
+      <button id="save" class="primary" type="submit">Сохранить</button>
+    </form>
+    <section aria-labelledby="detect-heading">
+      <h2 id="detect-heading">Автоопределение на Windows</h2>
+      <p>Запусти VPN-клиент и выбери найденный прокси. Для поиска нужен помощник из архива.</p>
+      <button id="detect">Найти локальный прокси</button>
+      <ul id="candidates" class="results"></ul>
+    </section>
+    <p id="status" role="status"></p>
+  </main>
+  <script src="routing.js"></script>
+  <script src="settings.js"></script>
+</body>
+</html>

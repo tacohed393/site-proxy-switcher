@@ -1,0 +1,23 @@
+:root { color-scheme: light dark; font: 15px/1.45 system-ui, sans-serif; }
+body { margin: 0; background: Canvas; color: CanvasText; }
+body.popup { width: 320px; }
+main { padding: 16px; }
+.settings main { max-width: 560px; padding: 32px 20px; margin: auto; }
+h1 { font-size: 21px; letter-spacing: -.02em; margin: 0 0 10px; }
+h2 { font-size: 15px; margin: 0 0 7px; }
+p { margin: 7px 0; overflow-wrap: anywhere; }
+section { border-block-start: 1px solid ButtonBorder; padding-top: 12px; margin-top: 14px; }
+button, input { font: inherit; border: 1px solid ButtonBorder; border-radius: 7px; padding: 8px 11px; box-sizing: border-box; }
+button { cursor: pointer; line-height: 1.3; }
+button:disabled { opacity: .55; cursor: default; }
+.primary { background: #2654b6; color: #fff; border-color: #2654b6; }
+.popup button, input { width: 100%; }
+.popup button:not(:first-child) { margin-top: 6px; }
+input { display: block; margin: 5px 0 9px; }
+button:focus-visible, input:focus-visible { outline: 2px solid Highlight; outline-offset: 2px; }
+ul { margin: 0; padding-inline-start: 20px; overflow-wrap: anywhere; }
+.popup ul { max-height: 132px; overflow: auto; }
+.results { list-style: none; padding-inline-start: 0; }
+li + li { margin-top: 8px; }
+.results button { margin-top: 5px; }
+#status:empty { display: none; }

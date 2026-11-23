@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Site Proxy Switcher</title>
+  <link rel="stylesheet" href="ui.css">
+</head>
+<body class="popup">
+  <main>
+    <h1>Site Proxy Switcher</h1>
+    <p id="domain" hidden></p>
+    <button id="toggle" class="primary" hidden></button>
+    <p id="status" role="status"></p>
+    <section aria-labelledby="site-list-heading">
+      <h2 id="site-list-heading">Сайты через прокси</h2>
+      <p id="empty">Список пока пуст.</p>
+      <ul id="sites" hidden></ul>
+    </section>
+    <button id="settings">Настроить прокси</button>
+  </main>
+  <script src="routing.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
